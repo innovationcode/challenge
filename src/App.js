@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
 import swal from "sweetalert";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import "./App.css";
 
@@ -19,7 +20,7 @@ const App = () => {
           item = item.toLowerCase().replaceAll(" ", "");
           if (index === temp.length) return accum;
           if (item !== "")
-            accum.push({ id: index, name: item, image: `${item}.jpeg` });
+            accum.push({ id: item, name: item, image: `${item}.jpeg` });
           return accum;
         }, [])
       );
@@ -35,6 +36,57 @@ const App = () => {
         setInputString={setInputString}
         handleGenerate={handleGenerate}
       />
+
+      <DragDropContext>
+        <Droppable droppableId="planets">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="mt-20"
+            >
+              {planets.length > 0 && (
+                <>
+                  {planets.map((planet, index) => {
+                    return (
+                      <Draggable
+                        key={planet.id}
+                        draggableId={planet.id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            className="grid grid-cols-2 h-32 border border-gray-200 my-4 w-full sm:w-3/4 mx-auto"
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <div className="relative">
+                              <img
+                                className="absolute top-0 left-0 w-full h-32 object-cover"
+                                src={
+                                  require(`./assets/images/${planet.image}`)
+                                    .default
+                                }
+                                alt={`${planet.name}`}
+                              />
+                            </div>
+                            <p className="text-3xl font-bold text-left p-10">
+                              {planet.name.charAt(0).toUpperCase() +
+                                planet.name.slice(1)}
+                            </p>
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                </>
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
