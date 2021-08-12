@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = () => {
+const Header = ({ inputString, setInputString, handleGenerate }) => {
   return (
     <div>
       <header>
@@ -12,8 +12,13 @@ const Header = () => {
             className="flex-grow pl-5 bg-transparent outline-none text-lg"
             type="text"
             placeholder="Enter coma-separated planet names"
+            value={inputString}
+            onChange={(e) => setInputString(e.target.value)}
           />
-          <button className="font-medium text-white bg-gray-400 rounded-full p-2 cursor-pointer mx-2 hover:bg-custom-green">
+          <button
+            className="font-medium text-white bg-gray-400 rounded-full p-2 cursor-pointer mx-2 hover:bg-custom-green"
+            onClick={() => handleGenerate()}
+          >
             Generate
           </button>
         </div>
