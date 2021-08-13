@@ -27,6 +27,17 @@ const App = () => {
     }
   };
 
+  const handleDragEnd = (results) => {
+    console.log("Results in handleDragEnd => ", results);
+    if (!results.destination) return;
+
+    let tempPlanetList = [...planets];
+    console.log("Temp planet array => ", tempPlanetList);
+    const [reorderedPlanets] = tempPlanetList.splice(results.source.index, 1);
+    tempPlanetList.splice(results.destination.index, 0, reorderedPlanets);
+    setPlanets(tempPlanetList);
+  };
+
   console.log("Planets ==> ", planets);
 
   return (
@@ -37,7 +48,7 @@ const App = () => {
         handleGenerate={handleGenerate}
       />
 
-      <DragDropContext>
+      <DragDropContext onDragEnd={(results) => handleDragEnd(results)}>
         <Droppable droppableId="planets">
           {(provided) => (
             <div
@@ -51,7 +62,7 @@ const App = () => {
                     return (
                       <Draggable
                         key={planet.id}
-                        draggableId={planet.id}
+                        draggableId={planet.name}
                         index={index}
                       >
                         {(provided) => (
