@@ -6,7 +6,6 @@ import DownloadLink from "react-download-link";
 import axios from "axios";
 
 import "./App.css";
-import { data } from "autoprefixer";
 
 const App = () => {
   const [inputString, setInputString] = useState("");
@@ -17,7 +16,30 @@ const App = () => {
     if (!inputString) {
       swal("Please enter", "comma separated planet names", "error");
     } else {
-      const temp = inputString.split(",");
+      const temp1 = inputString.split(",");
+      alert(temp1);
+      const planetsName = [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        // "uranus",
+        // "neptune",
+      ];
+      const temp = temp1.filter((ele) => {
+        console.log("ele ==> ", ele);
+        if (planetsName.includes(ele.trim().toLowerCase())) {
+          return ele;
+        } else {
+          swal(
+            "Please enter planet name correctly",
+            "Mercury, Venus, Earth, Mars, Jupiter, Saturn"
+          );
+        }
+      });
+      alert(temp);
       setInputString("");
       setPlanets(
         temp.reduce((accum, item, index) => {
