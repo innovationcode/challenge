@@ -16,7 +16,7 @@ const Header = ({ inputString, setInputString, handleGenerate }) => {
             onChange={(e) => setInputString(e.target.value)}
           />
           <button
-            className="font-medium text-white bg-gray-400 rounded-full p-2 cursor-pointer mx-2 hover:bg-custom-green"
+            className="font-semibold text-xl text-white bg-gray-400 rounded-full p-2 px-4 cursor-pointer mx-2 hover:bg-custom-green"
             onClick={() => handleGenerate()}
           >
             Generate

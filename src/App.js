@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import Header from "./components/Header";
 import swal from "sweetalert";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DownloadLink from "react-download-link";
+import axios from "axios";
 
 import "./App.css";
+import { data } from "autoprefixer";
 
 const App = () => {
   const [inputString, setInputString] = useState("");
   const [planets, setPlanets] = useState([]);
+  const [showDownload, setShowDownload] = useState(false);
 
   const handleGenerate = () => {
     if (!inputString) {
@@ -24,6 +28,7 @@ const App = () => {
           return accum;
         }, [])
       );
+      setShowDownload(true);
     }
   };
 
@@ -36,6 +41,30 @@ const App = () => {
     const [reorderedPlanets] = tempPlanetList.splice(results.source.index, 1);
     tempPlanetList.splice(results.destination.index, 0, reorderedPlanets);
     setPlanets(tempPlanetList);
+  };
+
+  const downloadedPlanetsHTML1 = async () => {
+    const dataP = planets.map(async (planet) => {
+      const response = await axios.get(
+        `./snippets/${
+          planet.name.charAt(0).toUpperCase() + planet.name.slice(1)
+        }.snippet.js`
+      );
+      return response.data;
+    });
+    debugger;
+    downloadPlan();
+    async function downloadPlan() {
+      const html = await [];
+      Promise.all(dataP).then((values) => {
+        values.map((value) => {
+          html.push(value);
+        });
+      });
+      console.log("HTML  ==>  ", html);
+      debugger;
+      if (html.length > 1) return html;
+    }
   };
 
   console.log("Planets ==> ", planets);
@@ -98,6 +127,19 @@ const App = () => {
           )}
         </Droppable>
       </DragDropContext>
+
+      {/* DOWNLOAD  LOGIC */}
+      {showDownload && (
+        <button className="px-6 py-2 text-xl text-white bg-gray-500 font-semibold rounded-lg	m-10 hover:bg-custom-green">
+          <DownloadLink
+            style={{ textDecoration: "none", color: "white" }}
+            label="Download"
+            filename="Planets.html"
+            // exportFile={() => downloadedPlanetsHTML()}
+            exportFile={() => downloadedPlanetsHTML1()}
+          />
+        </button>
+      )}
     </div>
   );
 };
