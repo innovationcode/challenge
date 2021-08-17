@@ -4,8 +4,7 @@ import swal from "sweetalert";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DownloadLink from "react-download-link";
 import axios from "axios";
-
-import "./App.css";
+import Background from "./assets/images/galaxy.jpg";
 
 const App = () => {
   const [inputString, setInputString] = useState("");
@@ -17,7 +16,6 @@ const App = () => {
       swal("Please enter", "comma separated planet names", "error");
     } else {
       const temp1 = inputString.split(",");
-      alert(temp1);
       const planetsName = [
         "mercury",
         "venus",
@@ -34,12 +32,12 @@ const App = () => {
           return ele;
         } else {
           swal(
+            ele,
             "Please enter planet name correctly",
             "Mercury, Venus, Earth, Mars, Jupiter, Saturn"
           );
         }
       });
-      alert(temp);
       setInputString("");
       setPlanets(
         temp.reduce((accum, item, index) => {
@@ -92,7 +90,12 @@ const App = () => {
   console.log("Planets ==> ", planets);
 
   return (
-    <div className="App">
+    <div
+      className="text-center w-full h-screen bg-no-repeat bg-cover"
+      // style={{
+      //   backgroundImage: `url(${Background})`,
+      // }}
+    >
       <Header
         inputString={inputString}
         setInputString={setInputString}
